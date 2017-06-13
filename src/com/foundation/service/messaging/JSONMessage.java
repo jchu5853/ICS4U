@@ -47,7 +47,7 @@ public class JSONMessage {
 		}
 		
 		try(FileWriter fw = new FileWriter(filename, true);BufferedWriter bw = new BufferedWriter(fw);PrintWriter out = new PrintWriter(bw)){
-			dataAdd = this.msgBody;
+			dataAdd = "$ " + this.msgBody;
 			out.println(dataAdd);
 		} catch (Exception e) {
 			successful = false;
