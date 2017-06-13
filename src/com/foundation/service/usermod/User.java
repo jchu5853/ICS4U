@@ -2,7 +2,6 @@ package com.foundation.service.usermod;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Formatter;
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,23 +11,32 @@ import java.io.FileWriter;
 public class User {
 	private String id;
 	private String passwd;
+	private String newPasswd = null;
 	
 	public void setUser(String username){
-		id = username;
+		this.id = username;
 	}
 	
 	public void setPasswd(String hash){
-		passwd = hash;
+		this.passwd = hash;
 	}	
 	
 	public String getID(){
-		return id;
+		return this.id;
 	}
 	
 	public String getPassword(){
-		return passwd;
+		return this.passwd;
 	}
 	
+	public String getNewPasswd() {
+		return newPasswd;
+	}
+
+	public void setNewPasswd(String newPasswd) {
+		this.newPasswd = newPasswd;
+	}
+
 	private Scanner input;
 	
 	public boolean exists() throws IOException{
@@ -60,8 +68,6 @@ public class User {
 		}
 		return false;
 	}
-	
-	private Formatter formats;
 	
 	public boolean saveUser() throws Exception{
 		File database = new File("database.txt");
