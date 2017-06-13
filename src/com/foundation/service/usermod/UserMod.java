@@ -1,15 +1,10 @@
 package com.foundation.service.usermod;
 
-import java.io.IOException;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 
 @Path("/usermod")
 public class UserMod {
@@ -143,7 +138,7 @@ public class UserMod {
 		return true;
 	}
 	
-	private String responseString(String error,String message) throws Exception{
+	public String responseString(String error,String message) throws Exception{
 		JSONResponse respond = new JSONResponse();
 		respond.setError(error);
 		respond.setMessage(message);
