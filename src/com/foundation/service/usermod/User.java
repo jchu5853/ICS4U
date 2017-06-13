@@ -15,18 +15,17 @@ public class User {
 	private String id;
 	private String passwd;
 	private String salt;
-	private byte[] hash;
 	
 	public void setUser(String username){
 		id = username;
 	}
 	
+	public void setPasswd(String hash){
+		passwd = hash;
+	}	
+	
 	public void setSalt(String value){
 		salt = value;
-	}
-	
-	public void setHash(byte[] value){
-		hash = value;
 	}
 	
 	public String getID(){
@@ -88,7 +87,7 @@ public class User {
 		
 		try{
 			formats = new Formatter(database);
-			//formats.format("%s\n%s\n%s\n",id,hash,salt);
+			formats.format("%s\n%s\n%s\n",id,passwd,salt);
 		} catch(Exception e){
 			successful = false;
 		} finally{

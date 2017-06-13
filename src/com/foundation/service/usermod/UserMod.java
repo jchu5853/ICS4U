@@ -46,7 +46,7 @@ public class UserMod {
 		//END OF VALIDATION
 		
 		//SET USER ACCOUNT VARIABLES
-			try{
+			try{/*
 				MessageDigest md = MessageDigest.getInstance("SHA-1");
 				String salt = UUID.randomUUID().toString();
 				user.setSalt(salt);
@@ -56,7 +56,7 @@ public class UserMod {
 				System.out.println(new String(md.digest()));
 			} catch(Exception e){
 				return Response.serverError().build();
-			}
+			}*/
 		
 		//RETURN SUCCESSFUL CREATION
 		if(user.saveUser()){
