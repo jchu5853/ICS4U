@@ -3,9 +3,11 @@ package com.foundation.service.usermod;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 
 public class User {
@@ -52,9 +54,7 @@ public class User {
 			input = new Scanner(database);
 			while(input.hasNext()){
 				tempUser = input.next();
-				System.out.println("TEMPUSER: " + tempUser);
 				tempPass = input.next();
-				System.out.println("TEMPPASS: " + tempPass);
 				
 				if(tempUser.equals(getID())){
 					return true;
@@ -106,4 +106,40 @@ public class User {
 		
 		return false;
 	}
+	
+	public boolean delete(String acctLine) {
+        try {
+            File db = new File("database.txt");
+            if(!db.exists()){
+            	return false;
+            }
+
+        	File tempFile = new File(db.getAbsolutePath() + ".tmp");
+            BufferedReader br = new BufferedReader(new FileReader("database.txt"));
+            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().equals(acctLine)) {
+                    pw.println(line);
+                    pw.flush();
+                }
+            }
+            pw.close();
+            br.close();
+            
+            if (!db.delete()) {
+                return false;
+            }
+            //Rename the new file to the filename the original file had.
+            if (!tempFile.renameTo(db)){
+                return false;
+            }
+ 
+        } catch (Exception e){
+        	return false;
+        }
+        
+        return true;
+    }
 }

@@ -86,6 +86,7 @@ public class UserMod {
 		if(inputUser.exists()){
 			if(inputUser.isUser()){
 				if(inputUser.getNewPasswd()!=null){
+					inputUser.delete(inputUser.getID() + " " + inputUser.getPassword());
 					inputUser.setPasswd(inputUser.getNewPasswd());
 					inputUser.saveUser();
 					String message = responseString("Success","");
@@ -95,6 +96,24 @@ public class UserMod {
 					String message = responseString("NNP","Please enter a new password.");
 					return Response.status(4002).entity(message).build();
 				}
+			}
+		}
+		String message = responseString("INP","Please try entering the password again.");
+		return Response.status(4000).entity(message).build();
+	}
+	
+	@Path("/delete")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response delAcct(String userInput) throws Exception{
+		ObjectMapper mapper = new ObjectMapper();
+		User inputUser = mapper.readValue(userInput, User.class);
+		if(inputUser.exists()){
+			if(inputUser.isUser()){
+				inputUser.delete(inputUser.getID() + " " + inputUser.getPassword());
+				String message = responseString("Success","");
+				return Response.ok().entity(message).build();
 			}
 		}
 		String message = responseString("INP","Please try entering the password again.");
