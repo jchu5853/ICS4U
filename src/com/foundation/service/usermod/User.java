@@ -1,20 +1,17 @@
 package com.foundation.service.usermod;
 
 import java.io.IOException;
-import java.security.MessageDigest;
+import java.io.PrintWriter;
 import java.util.Formatter;
 import java.util.Scanner;
-import java.util.UUID;
-
-import javax.ws.rs.core.Response;
-
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 
 public class User {
 	private String id;
 	private String passwd;
-	private String salt;
 	
 	public void setUser(String username){
 		id = username;
@@ -24,10 +21,6 @@ public class User {
 		passwd = hash;
 	}	
 	
-	public void setSalt(String value){
-		salt = value;
-	}
-	
 	public String getID(){
 		return id;
 	}
@@ -36,17 +29,12 @@ public class User {
 		return passwd;
 	}
 	
-	public String getSalt(){
-		return salt;
-	}
-	
 	private Scanner input;
 	
 	public boolean exists() throws IOException{
 		File database = new File("database.txt");
 		String tempUser = null;
 		String tempPass = null;
-		String tempSalt = null;
 		
 		if(!database.exists()){
 			database.createNewFile();
@@ -55,12 +43,10 @@ public class User {
 		try{
 			input = new Scanner(database);
 			while(input.hasNext()){
-				tempUser = input.nextLine();
+				tempUser = input.next();
 				System.out.println("TEMPUSER: " + tempUser);
-				tempPass = input.nextLine();
+				tempPass = input.next();
 				System.out.println("TEMPPASS: " + tempPass);
-				tempSalt = input.nextLine();
-				System.out.println("TEMPSALT: " + tempSalt);
 				
 				if(tempUser.equals(getID())){
 					return true;
@@ -79,21 +65,20 @@ public class User {
 	
 	public boolean saveUser() throws Exception{
 		File database = new File("database.txt");
+		String dataAdd = null;
 		boolean successful = true;
 		
 		if(!database.exists()){
 			database.createNewFile();
 		}
 		
-		try{
-			formats = new Formatter(database);
-			formats.format("%s\n%s\n%s\n",id,passwd,salt);
-		} catch(Exception e){
+		try(FileWriter fw = new FileWriter("database.txt", true);BufferedWriter bw = new BufferedWriter(fw);PrintWriter out = new PrintWriter(bw)){
+			dataAdd = getID() + " " + getPassword();
+			out.println(dataAdd);
+		} catch (Exception e) {
 			successful = false;
-		} finally{
-			formats.close();
 		}
-		
+
 		if(successful){
 			return true;
 		}
@@ -107,27 +92,9 @@ public class User {
 		while(input.hasNext()){
 			String tempUser = input.next();
 			String tempPass = input.next();
-			String tempSalt = input.next();
 			
-			if(tempUser.equals(getID())){
-				try{
-					MessageDigest md = MessageDigest.getInstance("SHA-1");
-					String inputPassUser = getPassword() + tempSalt;
-					md.update(inputPassUser.getBytes());
-					String digested = new String(md.digest());
-					System.out.println(digested);
-					System.out.println(tempPass);
-					if(digested.equals(tempPass)){
-						System.out.println("USER IS VALID");
-						return true;
-					}
-					else{
-						System.out.println("USER NOT VALID");
-						return false;
-					}
-				} catch(Exception e){
-					return false;
-				}
+			if(tempUser.equals(getID()) && tempPass.equals(getPassword())){
+				return true;
 			}
 		}
 		

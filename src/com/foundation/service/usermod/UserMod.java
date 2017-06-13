@@ -4,10 +4,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.UUID;
-import java.io.IOException;
-import java.security.MessageDigest;
-
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -44,19 +40,6 @@ public class UserMod {
 			}
 		}
 		//END OF VALIDATION
-		
-		//SET USER ACCOUNT VARIABLES
-			try{/*
-				MessageDigest md = MessageDigest.getInstance("SHA-1");
-				String salt = UUID.randomUUID().toString();
-				user.setSalt(salt);
-				String passUser = user.getPassword() + user.getSalt();
-				md.update(passUser.getBytes());
-				user.setHash(md.digest());
-				System.out.println(new String(md.digest()));
-			} catch(Exception e){
-				return Response.serverError().build();
-			}*/
 		
 		//RETURN SUCCESSFUL CREATION
 		if(user.saveUser()){
