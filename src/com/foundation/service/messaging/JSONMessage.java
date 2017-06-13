@@ -9,6 +9,7 @@ public class JSONMessage {
 	private String sender;
 	private String senderPass;
 	private String receiver;
+	private String receiverPass;
 	private String msgBody;
 	
 	public String getMsgBody() {
@@ -35,6 +36,12 @@ public class JSONMessage {
 	}
 	public void setSenderPass(String senderPass) {
 		this.senderPass = senderPass;
+	}
+	public String getReceiverPass() {
+		return receiverPass;
+	}
+	public void setReceiverPass(String receiverPass) {
+		this.receiverPass = receiverPass;
 	}
 	public boolean saveMsg() throws Exception{
 		String filename = this.sender + "$$" + this.receiver + ".txt";
