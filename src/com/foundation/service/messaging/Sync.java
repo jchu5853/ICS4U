@@ -11,7 +11,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 
 @Path("/messaging")
 public class Sync {
@@ -59,24 +61,29 @@ public class Sync {
 		if(receiver.exists()){
 			if(receiver.isUser()){
 				File[] convos = finder(".",receiver.getID());
+				if(convos.length == 0){
+					return Response.status(204).build();
+				}
 				for(int i=0;i<convos.length;i++){
-					Scanner input = new Scanner(convos[i]);
 					String msgBody = null;
+					int counter = 0;
 					int delim = (convos[i].getName()).indexOf("$");
 					String sender = (convos[i].getName()).substring(0,delim);
-					while(input.hasNext()){
-						msgBody = input.nextLine();
+					ReversedLinesFileReader fr = new ReversedLinesFileReader(convos[i]);
+					while((msgBody = fr.readLine()) != null && counter < 100){
 						JSONMessage temp = new JSONMessage();
-						temp.setMsgBody(msgBody);
+						temp.setMsgBody(msgBody.substring(2,msgBody.length()));
 						temp.setSender(sender);
 						msg.add(temp);
-						System.out.println(temp.getMsgBody());
+						counter++;
 					}
-					input.close();
+					fr.close();
 				}
+				ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+				String json = ow.writeValueAsString(msg);
+				return Response.ok().entity(json).build();
 			}
 		}
-		
 		
 		String feedback = mod.responseString("INP","Please try entering your credentials again.");
 		return Response.status(4000).entity(feedback).build();
