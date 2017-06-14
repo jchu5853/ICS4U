@@ -129,6 +129,9 @@ public class UserMod {
 	}
 
 	private boolean isValidP(String password) {
+		if(password.length() > 32 || password.length() < 8){
+			return false;
+		}
 		for(int i=0;i<password.length();i++){
 			if(!Character.isLetterOrDigit(password.charAt(i))){
 				if(password.charAt(i) == '_' || password.charAt(i) == '-') continue;

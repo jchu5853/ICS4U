@@ -5,7 +5,6 @@ import com.foundation.service.usermod.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
