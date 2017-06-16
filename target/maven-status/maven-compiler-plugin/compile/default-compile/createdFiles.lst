@@ -1,0 +1,6 @@
+com/foundation/service/usermod/User.class
+com/foundation/service/usermod/UserMod.class
+com/foundation/service/messaging/Sync.class
+com/foundation/service/messaging/JSONMessage.class
+com/foundation/service/usermod/JSONResponse.class
+com/foundation/service/messaging/Sync$1.class
